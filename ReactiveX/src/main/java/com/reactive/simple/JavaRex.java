@@ -9,10 +9,10 @@ import rx.Observable.OnSubscribe;
 import rx.Subscriber;
 import rx.functions.Func0;
 
-public class FilterRex {
+public class JavaRex {
 
 	public static void main(String[] args) throws Exception {
-		FilterRex filterRex = new FilterRex();
+		JavaRex javaRex = new JavaRex();
 		/*
 		 * filterRex.observaleInterval(); filterRex.observaleTimer();
 		 * Thread.sleep(5000);// So that interval can print elements
@@ -21,11 +21,17 @@ public class FilterRex {
 		 * filterRex.observableDeferIssue(); filterRex.observableDefer();
 		 * filterRex.map();
 		 */
-		filterRex.flatMap();
-		filterRex.concatMap();
-		filterRex.zip();
-		filterRex.concat();
-		filterRex.distinct();
+		javaRex.flatMap();
+		javaRex.concatMap();
+		javaRex.zip();
+		javaRex.concat();
+		javaRex.distinct();
+		javaRex.first();
+		javaRex.firstWithCondition();
+		javaRex.last();
+		javaRex.lastWithCondition();
+		javaRex.scan();
+		
 	}
 
 	public void filterLambdaWithError() {
@@ -225,6 +231,32 @@ public class FilterRex {
 		List<Integer> range=Arrays.asList(1,2,3,4,1,3,5);
 		Observable<Integer> distinctNumber = Observable.from(range);
 		distinctNumber.distinct().subscribe(t -> System.out.println("Value "+t));
+	}
+	public void first(){
+		List<Integer> range=Arrays.asList(1,2,3,4,7,8,5);
+		Observable<Integer> distinctNumber = Observable.from(range);
+		distinctNumber.first().subscribe(t->System.out.println(t));
+	}
+	public void firstWithCondition(){
+		List<Integer> range=Arrays.asList(1,2,3,4,7,8,5);
+		Observable<Integer> distinctNumber = Observable.from(range);
+		distinctNumber.first(x->x>5).subscribe(t->System.out.println(t));
+	}
+	
+	public void last(){
+		List<Integer> range=Arrays.asList(1,2,3,4,7,8,5);
+		Observable.from(range).last().subscribe(t->System.out.println(t));
+	}
+	public void lastWithCondition(){
+		List<Integer> range=Arrays.asList(1,2,3,4,7,8,5);
+		Observable.from(range).last(x-> x>5).subscribe(t->System.out.println(t));
+	}
+	//1--2--3--4--5
+	//1+1=1, 1+2=3, 3+3=6, 6+4=10, 10+5=15
+	//Output:: 1, 3, 6, 10, 15
+	public void scan(){
+		Observable<Integer> range = Observable.range(1,5);
+		range.scan((t1,t2)->t1+t2).subscribe(t->System.out.println("scan "+t));
 	}
 	private Subscriber<Long> longSubscribe() {
 		return new Subscriber<Long>() {
